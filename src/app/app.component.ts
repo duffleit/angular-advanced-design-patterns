@@ -5,16 +5,28 @@ import { SlideDefinition } from './slider/slider.component';
   selector: 'app-root',
   template: `
     <div class="center">
-      <ec-slider [slides]="slides" [width]="800" [height]="600"></ec-slider>
+      <ec-slider>
+        <ec-dot-navigation></ec-dot-navigation>
+        <ec-vertical-rotator [speed]="2000" [width]="800" [height]="600">
+          <ec-spinning-slide ecSlide *ngFor="let slide of spinningSlides" [definition]="slide"></ec-spinning-slide>
+          <ec-static-slide ecSlide *ngFor="let slide of staticSlides" [definition]="slide"></ec-static-slide>
+        </ec-vertical-rotator>
+        <ec-dot-navigation></ec-dot-navigation>
+      </ec-slider>
     </div>`
 })
 export class AppComponent {
-  slides: SlideDefinition[] = [
+
+
+  spinningSlides: SlideDefinition[] = [
     {
       backgroundImage: "assets/images/schoenbrunn.png",
       caption: "Schönbrunn Palace",
-      description: "A former imperial summer residence."
+      description: "A former imperial summer residence.",
     },
+  ];
+
+  staticSlides: SlideDefinition[] = [
     {
       backgroundImage: "assets/images/stephansdom.png",
       caption: "St. Stephen's Cathedral",

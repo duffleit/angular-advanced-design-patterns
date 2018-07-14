@@ -1,44 +1,27 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { interval } from 'rxjs';
+import { Component, OnInit, Input, ContentChildren, QueryList } from '@angular/core';
+import { interval, Subject } from 'rxjs';
+import { SlideComponent } from '../slide/slide.component';
+import { SpinningSlideComponent } from '../spinning-slide/spinning-slide.component';
+import { SlideDirective } from '../slide.directive';
+import { Slide } from '../slide';
 
 @Component({
   selector: 'ec-slider',
   template: `
-    <div class="slider-container" [ngStyle]="{'width.px': width, 'height.px': height}">
-      <div class="screen" [ngStyle]="{'margin-top.px': offset}">
-        <div class="slide" *ngFor="let definition of slides"
-            [ngStyle]="{'background-image': 'url(' + definition.backgroundImage + ')'}">
-          <div class="caption">
-            <div class="title">{{definition.caption}}</div>
-            <div class="description">{{definition.description}}</div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <ng-content></ng-content>
   `,
   styleUrls: ['./slider.component.scss']
 })
-export class SliderComponent implements OnInit {
+export class SliderComponent {
 
-  @Input()
-  slides: SlideDefinition[];
-  @Input()
-  width: number;
-  @Input()
-  height: number;
+  @ContentChildren(SlideDirective, {descendants: true, read: Slide })
+  slideComponents: QueryList<Slide>;
 
-  public offset: number;
-  private intervalSubscriber: any;
+  currentSlide: Subject<SlideDefinition> = new Subject();
 
-  ngOnInit(): void {
-    this.intervalSubscriber = interval(2000).subscribe(val => {
-      const currentSlide = val % this.slides.length;
-      this.offset = currentSlide * this.height * -1;
-    })
-  }
-
-  ngOnDestroy(): void {
-    this.intervalSubscriber.unsubscribe();
+  get slides(): SlideDefinition[] {
+    console.log(this.slideComponents.toArray());
+    return this.slideComponents.toArray().map(s => s.getDefinition());
   }
 }
 

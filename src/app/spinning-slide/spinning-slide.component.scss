@@ -1,0 +1,50 @@
+.slide {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 100%;
+    position: relative;
+    background-image: none !important;
+    background-color: grey;
+    overflow: hidden;
+    .caption {
+        padding: 2rem;
+        background-color: rgba(0, 0, 0, .5);
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 5000;
+        .title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+        }
+        .description {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: white;
+        }
+    }
+}
+
+.spinner {
+    animation: spinX 5s linear infinite;
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+}
+
+@keyframes spinX {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
